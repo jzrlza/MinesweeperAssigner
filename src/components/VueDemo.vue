@@ -87,6 +87,8 @@ export default {
         var myElement = document.querySelector("#btn"+x+"_"+y);
         myElement.style.color = "white";
         myElement.style.backgroundColor = "white";
+        this.remaining++;
+        this.bombs--;
       } else {
       	if (!this.bomb_mode) {
       		//document.getElementById("btn"+x+"_"+y).value = this.board[y][x].toString();
@@ -94,10 +96,12 @@ export default {
 		      	this.flag[y][x] = 0;
 		        var myElement = document.querySelector("#btn"+x+"_"+y);
 		        myElement.style.backgroundColor = "white";
+		        this.remaining++;
 		      } else {
 		      	this.flag[y][x] = "x";
 		        var myElement = document.querySelector("#btn"+x+"_"+y);
 		        myElement.style.backgroundColor = "silver";
+		        this.remaining--;
 		      }
       		
       		return;
@@ -107,6 +111,8 @@ export default {
         var myElement = document.querySelector("#btn"+x+"_"+y);
         myElement.style.color = "black";
         myElement.style.backgroundColor = "red";
+        this.remaining--;
+        this.bombs++;
       }
 
       this.assignNumbers();
@@ -133,6 +139,7 @@ export default {
         }
       }
       //setProperty("bombCounter", "text", "0"+this.bombs);
+      this.assignNumbers();
     },
     assignNumbers() {
 
@@ -251,7 +258,7 @@ export default {
       this.initBoard();
 
       this.assignBombs();
-      this.assignNumbers();
+      //this.assignNumbers();
   }
 
 }
