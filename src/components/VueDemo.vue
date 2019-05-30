@@ -1,6 +1,10 @@
 <template>
   <div class="hello">
-    <img src='@/assets/logo-mine.png'>
+    <img src='@/assets/logo-mine.png'><br>
+    
+    <button style="width: 300px; height: 25px;" v-on:click="changeMode" :disabled="bomb_mode">Place Bomb Mode</button><br>
+    <button style="width: 300px; height: 25px;" v-on:click="changeMode" :disabled="!bomb_mode">Place "Absolutely No Bomb" Flag Mode</button><br>
+	
     <p v-for="j in b_height"><a v-for="i in b_width">
       <input type="button" style="color:white; background-color: white;"
       :id="'btn' + i + '_' + j" v-on:click="addOrRemoveBomb(i,j)" :disabled="board[j][i] == 9" :value="board[j][i]"></input></a>
@@ -31,9 +35,17 @@ export default {
       flags: 0,
       flagState: 0,
       styles: ['white','blue','green','red','navy','maroon','teal','black','grey'],
+      bomb_mode: true,
     }
   },
   methods: {
+  	changeMode() {
+  		if (this.bomb_mode) {
+  			this.bomb_mode = false;
+  		} else {
+  			this.bomb_mode = true;
+  		}
+  	},
     getNumberColor(no,x,y) {
       if (no === "b") {
         document.getElementById("btn"+x+"_"+y).style = {
@@ -48,15 +60,35 @@ export default {
       }
     },
     addOrRemoveBomb(x,y) {
-      console.log(x);
-      console.log(y);
+      //console.log(x);
+      //console.log(y);
+      if (this.flag[y][x] === "x" && this.bomb_mode) {
+      	return;
+      }
       if (this.board[y][x] === "b") {
+      	if (!this.bomb_mode) {
+      		return;
+      	}
         this.board[y][x] = 0;
         document.getElementById("btn"+x+"_"+y).value = this.board[y][x].toString();
         var myElement = document.querySelector("#btn"+x+"_"+y);
         myElement.style.color = "white";
         myElement.style.backgroundColor = "white";
       } else {
+      	if (!this.bomb_mode) {
+      		//document.getElementById("btn"+x+"_"+y).value = this.board[y][x].toString();
+      		if (this.flag[y][x] === "x") {
+		      	this.flag[y][x] = 0;
+		        var myElement = document.querySelector("#btn"+x+"_"+y);
+		        myElement.style.backgroundColor = "white";
+		      } else {
+		      	this.flag[y][x] = "x";
+		        var myElement = document.querySelector("#btn"+x+"_"+y);
+		        myElement.style.backgroundColor = "silver";
+		      }
+      		
+      		return;
+      	}
         this.board[y][x] = "b";
         document.getElementById("btn"+x+"_"+y).value = this.board[y][x].toString();
         var myElement = document.querySelector("#btn"+x+"_"+y);
@@ -66,7 +98,7 @@ export default {
 
       this.assignNumbers();
 
-      console.log(this.board);
+      //console.log(this.board);
 
     },
     assignBombs() {
@@ -162,46 +194,49 @@ export default {
           }
       }
 
+    },
+    initBoard() {
+    	var y = 0;
+	    var x = 0;
+
+	    this.board = [ ];
+	    for(y = 0; y < this.b_height+2; ++y) {
+	        this.board[y] = [ ];
+	        for(x = 0; x < this.b_width+2; ++x) {
+	            if (y == 0 || y == this.b_height+1 || x == 0 || x == this.b_width+1){
+	              this.board[y][x] = 9;
+	            } else {
+	              this.board[y][x] = 0;
+	            }
+	        }
+	    }
+
+	    this.flag = [ ];
+	    for(y = 0; y < this.b_height+2; ++y) {
+	        this.flag[y] = [ ];
+	        for(x = 0; x < this.b_width+2; ++x) {
+	            this.flag[y][x] = 0;
+	        }
+	    }
+
+	    this.reveal = [ ];
+	    for(y = 0; y < this.b_height+2; ++y) {
+	        this.reveal[y] = [ ];
+	        for(x = 0; x < this.b_width+2; ++x) {
+	            if (y == 0 || y == this.b_height+1 || x == 0 || x == this.b_width+1){
+	              this.reveal[y][x] = 9;
+	            } else {
+	              this.reveal[y][x] = 0;
+	            }
+	        }
+	    }
+
+	    this.remaining = this.b_height*this.b_width;
     }
   },
   mounted(){
 
-      var y = 0;
-      var x = 0;
-
-      this.board = [ ];
-      for(y = 0; y < this.b_height+2; ++y) {
-          this.board[y] = [ ];
-          for(x = 0; x < this.b_width+2; ++x) {
-              if (y == 0 || y == this.b_height+1 || x == 0 || x == this.b_width+1){
-                this.board[y][x] = 9;
-              } else {
-                this.board[y][x] = 0;
-              }
-          }
-      }
-
-      this.flag = [ ];
-      for(y = 0; y < this.b_height+2; ++y) {
-          this.flag[y] = [ ];
-          for(x = 0; x < this.b_width+2; ++x) {
-              this.flag[y][x] = 0;
-          }
-      }
-
-      this.reveal = [ ];
-      for(y = 0; y < this.b_height+2; ++y) {
-          this.reveal[y] = [ ];
-          for(x = 0; x < this.b_width+2; ++x) {
-              if (y == 0 || y == this.b_height+1 || x == 0 || x == this.b_width+1){
-                this.reveal[y][x] = 9;
-              } else {
-                this.reveal[y][x] = 0;
-              }
-          }
-      }
-
-      this.remaining = this.b_height*this.b_width;
+      this.initBoard();
 
       this.assignBombs();
       this.assignNumbers();
