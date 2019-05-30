@@ -10,6 +10,19 @@
       :id="'btn' + i + '_' + j" v-on:click="addOrRemoveBomb(i,j)" :disabled="board[j][i] == 9" :value="board[j][i]"></input></a>
     </p>
     <p>---</p>
+<!--
+    <h4>Customize Board Size</h4>
+    <form v-on:submit.prevent="resetBoard">
+      <h5>Height</h5>
+      <input style="width: 200px; height: 25px; text-align: right;" v-model="n_height" type="number" name="height" min="8" max="100">
+      <h5>Width</h5>
+      <input style="width: 200px; height: 25px; text-align: right;" v-model="n_width" type="number" name="width" min="8" max="100">
+      <br>
+      <button style="margin-top: 40px; width: 200px; height: 25px;" type="submit">Reset</button>
+    </form>
+
+    <p></p>
+    -->
     
   </div>
 </template>
@@ -23,7 +36,7 @@ export default {
   data () {
     return {
       b_height: 30,
-      b_width: 16,
+      b_width: 30,
       board: [],
       flag: [],
       reveal: [],
@@ -235,7 +248,6 @@ export default {
     }
   },
   mounted(){
-
       this.initBoard();
 
       this.assignBombs();
