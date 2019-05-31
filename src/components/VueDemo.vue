@@ -2,13 +2,13 @@
   <div class="hello">
     <img src='@/assets/logo-mine.png'><br>
     
-    <button style="width: 300px; height: 25px;" v-on:click="changeMode" :disabled="bomb_mode">Place Bomb Mode</button><br>
-    <button style="width: 300px; height: 25px;" v-on:click="changeMode" :disabled="!bomb_mode">Place "Absolutely No Bomb" Flag Mode</button><br>
+    <button style="width: 300px; height: 25px; margin: 5px 0px;" v-on:click="changeMode" :disabled="bomb_mode">Place Bomb Mode</button><br>
+    <button style="width: 300px; height: 25px; margin-top: 5px; margin-bottom: 20px;" v-on:click="changeMode" :disabled="!bomb_mode">Place "Absolutely No Bomb" Flag Mode</button><br>
 	
-    <p v-for="j in b_height"><a v-for="i in b_width">
-      <input type="button" style="color:white; background-color: white;"
-      :id="'btn' + i + '_' + j" v-on:click="addOrRemoveBomb(i,j)" :disabled="board[j][i] == 9" :value="board[j][i]"></input></a>
-    </p>
+    <a v-for="j in b_height"><a v-for="i in b_width">
+      <input type="button" style="color:white; background-color: white; width: 24px; height: 24px; font-weight: bold;"
+      :id="'btn' + i + '_' + j" v-on:click="addOrRemoveBomb(i,j)" :disabled="board[j][i] == 9" :value="board[j][i]"></input></a><br>
+    </a>
     <p>---</p>
 
 
@@ -303,6 +303,10 @@ a {
 
 img {
   width: 250px;
+}
+
+.field_br {
+   content: " ";
 }
 
 </style>
