@@ -112,7 +112,7 @@ export default {
 		      } else {
 		      	this.flag[y][x] = "x";
 		        var myElement = document.querySelector("#btn"+x+"_"+y);
-		        myElement.style.backgroundColor = "silver";
+		        myElement.style.backgroundColor = "yellow";
 		        this.remaining--;
 		      }
       		
